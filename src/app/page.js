@@ -1,95 +1,59 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client"
+import { useEffect, useState } from 'react';
+import '../app/styles/index.scss'
 
 export default function Home() {
+
+  const arr = [10, 20, 30, 40, 50];
+  const [expanded, setExpanded] = useState(false)
+  const [barData, setBarData] = useState([])
+
+
+  const generate = () => {
+    let arr =  [];
+    for (let i = 0; i < 6; i++) {
+     arr.push(Math.floor(Math.random() * 50) + 1);
+    }
+    setBarData(arr);
+  }
+
+
+  useEffect(() => {
+    generate();
+     setTimeout(() => {
+        setExpanded(true)
+     }, 50)
+  }, [])
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className='main-container'>
+        <div className='bar-graph-container'>
+          {arr.map((item, index) => {
+            return (
+             <div className='y-axis-element' style={{ bottom: item * 9 - 10, left: -30 }} key={index}>
+              {item}
+              </div>
+            )
+          })}
+          {barData.map((item, idex) => {
+           return ( <div className='x-axis-element' style={{ height: !expanded ? 0 :  item * 9  }} key={idex}>
+                <div className='inner-number-div'>
+                    {idex + 1}
+                 </div>
+            </div>)
+          })}
+          <div className='x-axis-heading'>
+             Rating
+          </div>
+          <div className='y-axis-heading'>
+            No of ratings
+          </div>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        <div className='regenerate-button' onClick={() => {
+           generate();
+        }}>
+           regenarate
+        </div>
+    </div>
   );
 }
